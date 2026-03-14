@@ -12,13 +12,10 @@ describe('api/swapi-films handler', () => {
     // This test verifies request guarding so unsupported methods are rejected early.
     const request = `TODO call createMockRequest with a POST instead of GET`
     const response = createMockResponse()
+    await handler(request, response)
 
-    // TODO call swapi-films serverless function
-
-    // TODO assert status code is 405
-
-    // TODO assert payload is { error: 'Method not allowed' }
-
+    expect(response.statusCode).toBe(405)
+    expect(response.payload).toEqual({ error: 'Method not allowed' })
   })
 
   it('returns films from SWAPI when upstream succeeds', async () => {
