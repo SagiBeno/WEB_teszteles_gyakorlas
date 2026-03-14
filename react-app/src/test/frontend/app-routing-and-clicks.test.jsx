@@ -104,14 +104,17 @@ describe('frontend routing and click behavior', () => {
 
   it('shows all feature callout cards on home page', () => {
     // This test verifies presence of informational callout cards for students.
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
 
+    const section = screen.getByText('Welcome').closest('section')
+    const scope = within(section)
 
-    // TODO this assertion fails but should pass: const section = screen.getByText('Welcome').closest('section')
-    // TODO this assertion fails but should pass: const scope = within(section)
-
-    // TODO this assertion fails but should pass: expect(scope.getByText('SWAPI')).toBeInTheDocument()
-    // TODO assert Lamp is in the document
-    // TODO assert Voting is in the document
-
+    expect(scope.getByText('SWAPI')).toBeInTheDocument()
+    expect(scope.getByText('Lamp')).toBeInTheDocument()
+    expect(scope.getByText('Voting')).toBeInTheDocument()
   })
 })
