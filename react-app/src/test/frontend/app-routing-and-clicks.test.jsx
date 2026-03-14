@@ -41,17 +41,28 @@ describe('frontend routing and click behavior', () => {
 
   it('navigates to Voting page and exposes form controls', async () => {
     // This test ensures click navigation reaches the voting route and key form elements exist.
+    const user = userEvent.setup()
 
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
 
+    // test clicks on Voting link
+    await user.click(screen.getByRole('link', { name: 'Voting' }))
 
+    // assert heading named Teacher Birthday Voting is in the document
+    expect(screen.getByRole('heading', { name: 'Teacher Birthday Voting' })).toBeInTheDocument()
 
-    // TODO test clicks on Voting link
+    // assert Student Name is in the document
+    expect(screen.getByLabelText(/student name/i)).toBeInTheDocument()
 
-    // TODO assert heading named Teacher Birthday Voting is in the document
-    // TODO assert Student Name is in the document
-    // TODO assert Teacher is in the document
-    // TODO assert Gift Choice is in the document
+    // assert Teacher is in the document
+    expect(screen.getByLabelText(/teacher/i)).toBeInTheDocument()
 
+    // assert Gift Choice is in the document
+    expect(screen.getByLabelText(/gift choice/i)).toBeInTheDocument()
   })
 
   it('starts and stops lamp stage animation when control buttons are clicked', async () => {
