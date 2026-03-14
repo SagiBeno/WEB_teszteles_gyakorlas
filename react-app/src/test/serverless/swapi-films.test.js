@@ -13,7 +13,7 @@ afterEach(() => {
 describe("api/swapi-films handler", () => {
   it("returns 405 when the request method is not GET", async () => {
     // This test verifies request guarding so unsupported methods are rejected early.
-    const request = createMockRequest("POST");
+    const request = createMockRequest({ method: "POST" });
     const response = createMockResponse();
 
     await handler(request, response);
@@ -30,7 +30,7 @@ describe("api/swapi-films handler", () => {
       json: async () => mockFilms,
     });
 
-    const request = createMockRequest("GET");
+    const request = createMockRequest({ method: "GET" });
     const response = createMockResponse();
 
     await handler(request, response);
@@ -49,7 +49,7 @@ describe("api/swapi-films handler", () => {
       json: async () => ({}),
     });
 
-    const request = createMockRequest("GET");
+    const request = createMockRequest({ method: "GET" });
     const response = createMockResponse();
 
     await handler(request, response);
