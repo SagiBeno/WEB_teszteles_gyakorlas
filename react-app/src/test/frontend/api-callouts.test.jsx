@@ -28,8 +28,12 @@ describe('frontend API callouts and button clicks', () => {
         release_date: '1977-05-25',
       },
       {
-        todo: `insert episode 5 data here with shortened opening crawl`,
-
+        episode_id: 5,
+        title: 'The Empire Strikes Back',
+        director: 'Irvin Kershner',
+        producer: 'Gary Kurtz, Rick McCallum',
+        opening_crawl: 'It is a dark time for the Rebellion...',
+        release_date: '1980-05-21',
       },
     ]
 
@@ -45,27 +49,24 @@ describe('frontend API callouts and button clicks', () => {
       })
 
     const user = userEvent.setup()
-    // TODO render SwapiPage
+    render(<SwapiPage />)
 
+    const saveButton = screen.getByRole('button', { name: /save to supabase/i })
+    expect(saveButton).toBeDisabled()
 
-    const saveButton = `TODO select Save to Supabase button`
-    // TODO assert saveButton is disabled
+    const loadButton = screen.getByRole('button', { name: /load films/i })
+    await user.click(loadButton)
 
+    await screen.findByText('Films loaded from SWAPI.')
+    expect(screen.getByText('A New Hope')).toBeInTheDocument()
+    expect(screen.getByText('The Empire Strikes Back')).toBeInTheDocument()
 
-    // TODO click Load Films button
-
-
-    // TODO this assertion fails but should pass: await screen.findByText('Films loaded from SWAPI.')
-    // TODO assert A New Hope is in the document
-    // TODO assert episode 5 title is in the document
-    
   })
 
   it('shows error callout on SWAPI load failure', async () => {
     // This test confirms that backend failures are surfaced to students via alert callouts.
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-        todo: `mock not ok and json returns { error: 'Network unavailable' }`,        
-
+      todo: `mock not ok and json returns { error: 'Network unavailable' }`,
     })
 
 
@@ -81,7 +82,7 @@ describe('frontend API callouts and button clicks', () => {
   it('submits voting form and shows success callout', async () => {
     // This test checks form interaction, submit click behavior, and success feedback callout.
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-        todo: `mock ok and json returns { success: true }`,
+      todo: `mock ok and json returns { success: true }`,
 
     })
 
@@ -103,7 +104,7 @@ describe('frontend API callouts and button clicks', () => {
   it('shows error callout when voting API fails', async () => {
     // This test makes sure submit failures also produce visible callout feedback.
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-        todo: `mock not ok and json returns { error: 'Vote submission failed on server' }`,
+      todo: `mock not ok and json returns { error: 'Vote submission failed on server' }`,
 
     })
 
