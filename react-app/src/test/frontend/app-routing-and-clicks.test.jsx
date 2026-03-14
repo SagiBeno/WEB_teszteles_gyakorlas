@@ -15,13 +15,12 @@ describe('frontend routing and click behavior', () => {
       </MemoryRouter>,
     )
 
-    // TODO assert Student Functions Lab is in the document
-    // TODO assert a link named Home is in the document
-    // TODO assert a link named SWAPI is in the document
-    // TODO assert a link named Traffic Lamp is in the document
-    // TODO assert a link named Voting is in the document
-    // TODO assert Welcome is in the document
-
+    expect(screen.getByText('Student Functions Lab')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'SWAPI' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Traffic Lamp' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Voting' })).toBeInTheDocument()
+    expect(screen.getByText('Welcome')).toBeInTheDocument()
   })
 
   it('navigates to SWAPI page when SWAPI menu item is clicked', async () => {
