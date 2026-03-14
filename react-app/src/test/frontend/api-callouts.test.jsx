@@ -153,19 +153,27 @@ describe('frontend API callouts and button clicks', () => {
   })
 
 
-  it.skip('shows error callout when voting API fails', async () => {
+  it('shows error callout when voting API fails', async () => {
     // This test makes sure submit failures also produce visible callout feedback.
 
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-      todo: `mock not ok and json returns { error: 'Vote submission failed on server' }`,
+      ok: false,
+      json: async () => ({ error: 'Vote submission failed on server' }),
     })
 
+    const user = userEvent.setup()
+
     // render VotingPage
+    render(<VotingPage />)
 
     // type Taylor into Student Name element
+    await user.type(screen.getByLabelText(/student name/i), 'Taylor')
+
     // click Submit Vote button
+    await user.click(screen.getByRole('button', { name: /submit vote/i }))
 
     // find text Vote submission failed on server
+    await screen.findByText('Vote submission failed on server')
   })
 
 })
