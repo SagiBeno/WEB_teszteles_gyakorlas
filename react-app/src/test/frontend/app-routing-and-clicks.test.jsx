@@ -28,11 +28,15 @@ describe('frontend routing and click behavior', () => {
     // A user click on the menu item should replace page content with SWAPI content.
     const user = userEvent.setup()
 
-    // TODO render
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
 
-    // TODO this assertion fails but should pass: await user.click(screen.getByRole('link', { name: 'SWAPI' }))
+    await user.click(screen.getByRole('link', { name: 'SWAPI' }))
 
-    // TODO this assertion fails but should pass: expect(screen.getByRole('heading', { name: 'SWAPI Films' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'SWAPI Films' })).toBeInTheDocument()
   })
 
   it('navigates to Voting page and exposes form controls', async () => {
