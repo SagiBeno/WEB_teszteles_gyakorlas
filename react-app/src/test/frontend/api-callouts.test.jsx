@@ -61,22 +61,22 @@ describe('frontend API callouts and button clicks', () => {
     expect(screen.getByText('A New Hope')).toBeInTheDocument()
     expect(screen.getByText('The Empire Strikes Back')).toBeInTheDocument()
 
-  })
+    expect(saveButton).not.toBeDisabled()
 
-  it('shows error callout on SWAPI load failure', async () => {
-    // This test confirms that backend failures are surfaced to students via alert callouts.
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-      todo: `mock not ok and json returns { error: 'Network unavailable' }`,
-    })
+    await user.click(saveButton)
 
+    await screen.findByText('Saved 2 films to Supabase.')
 
-    render(<SwapiPage />)
-
-    // TODO click Load Films button
-
-
-    // TODO this assertion fails but should pass: await screen.findByText('Network unavailable')
-
+    expect(globalThis.fetch).toHaveBeenNthCalledWith(1, '/api/swapi-films')
+    expect(globalThis.fetch).toHaveBeenNthCalledWith(
+      2,
+      '/api/save-films',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ films: mockFilms }),
+      },
+    )
   })
 
   it('submits voting form and shows success callout', async () => {
