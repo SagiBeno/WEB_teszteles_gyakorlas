@@ -72,23 +72,25 @@ describe('frontend routing and click behavior', () => {
     render(<LampPage />)
 
     const redLamp = screen.getByLabelText('red lamp')
-    const yellowLamp = `TODO select yellow lamp`
+    const yellowLamp = screen.getByLabelText('yellow lamp')
 
     expect(redLamp).toHaveClass('active')
-    // TODO assert yellow lamp is not active yet
-
+    // assert yellow lamp is not active yet
+    expect(yellowLamp).not.toHaveClass('active')
 
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
     act(() => {
       vi.advanceTimersByTime(1700)
     })
 
-    // TODO assert red lamp is still active
+    // assert red lamp is still active
+    expect(redLamp).toHaveClass('active')
 
-    // TODO assert yellow lamp is active
+    // assert yellow lamp is active
+    expect(yellowLamp).toHaveClass('active')
 
-
-    // TODO press Stop button
+    // press Stop button
+    fireEvent.click(screen.getByRole('button', { name: 'Stop' }))
 
     const classSnapshot = yellowLamp.className
 
