@@ -120,23 +120,36 @@ describe('frontend API callouts and button clicks', () => {
   })
 
 
-  it.skip('submits voting form and shows success callout', async () => {
+  it('submits voting form and shows success callout', async () => {
     // This test checks form interaction, submit click behavior, and success feedback callout.
 
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-      todo: `mock ok and json returns { success: true }`,
+      ok: true,
+      json: async () => ({ success: true }),
     })
 
+    const user = userEvent.setup()
+
     // render VotingPage
+    render(<VotingPage />)
 
     // type Jordan into Student Name element
+    await user.type(screen.getByLabelText(/student name/i), 'Jordan')
+
     // type Ms. Allen into Teacher element
+    await user.selectOptions(screen.getByLabelText(/teacher/i), 'Ms. Allen')
+
     // type Book Collection into Gift Choice element
+    await user.selectOptions(screen.getByLabelText(/gift choice/i), 'Book Collection')
+
     // type Great mentor! into Note (Optional) element
+    await user.type(screen.getByLabelText(/note \(optional\)/i), 'Great mentor!')
 
     // click Submit Vote button
+    await user.click(screen.getByRole('button', { name: /submit vote/i }))
 
     // find text Your vote was submitted successfully.
+    await screen.findByText('Your vote was submitted successfully.')
   })
 
 
