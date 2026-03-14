@@ -43,17 +43,18 @@ describe("api/swapi-films handler", () => {
   });
 
   it("returns 500 when upstream returns a non-ok response", async () => {
-    // This test ensures that upstream failures are converted into API error responses.
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      todo: `mock ok field, status=502 and async json()`,
+      ok: false,
+      status: 502,
+      json: async () => ({}),
     });
 
-    const request = `TODO call createMockRequest with GET`;
+    const request = createMockRequest("GET");
     const response = createMockResponse();
 
-    // TODO call swapi-films serverless function
+    await handler(request, response);
 
-    // TODO assert status code is >= 500
-    // TODO assert payload.error contains "failed with status 502"
+    expect(response.statusCode).toBeGreaterThanOrEqual(500);
+    expect(response.payload.error).toContain("failed with status 502");
   });
 });
